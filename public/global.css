@@ -1,0 +1,48 @@
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  cursor: default;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 14px;
+}
+
+textarea {
+  font-size: 14px;
+}
+
+.things-star {
+  color: rgb(254, 214, 9);
+}
+
+.things-inbox {
+  color: rgb(39, 172, 248);
+}
+
+.things-upcoming {
+  color: rgb(252, 19, 108);
+}
+
+.things-someday {
+  color: rgb(205, 193, 129);
+}
+
+.things-anytime {
+  color: rgb(61, 167, 154);
+}
+
+* {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}

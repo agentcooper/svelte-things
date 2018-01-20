@@ -1,0 +1,87 @@
+<div on:click="click(event, id)" on:dblclick="edit(event, id)" class="{{ done ? 'todo--done' : '' }} {{ edit ? 'todo--edit' : '' }} {{ (active && !edit) ? 'todo--active' : '' }} todo">
+  <div>
+    <input type="checkbox" bind:checked='done' on:change='fire("change", { id, done })' /> {{title}}
+  </div>
+  <textarea placeholder="Notes" class="textarea"></textarea>
+  <div class="todo-controls">
+    <div style="flex: 1;"></div>
+    <div>
+      <ToggleIcon text="When" icon="icon-calendar" />
+      <ToggleIcon text="Tags" icon="icon-tag" />
+      <ToggleIcon text="Checklist" icon="icon-list-bullet" />
+      <ToggleIcon text="Deadline" icon="icon-flag" />
+    </div>
+  </div>
+</div>
+
+<script>
+  import ToggleIcon from './ToggleIcon.html';
+
+  export default {
+    data() {
+      return {
+        edit: false,
+      };
+    },
+
+    methods: {
+      edit(event, id) {
+        this.fire('edit', { id });
+      },
+
+      click(event, id) {
+        event.stopPropagation();
+        this.fire('select', { id });
+      }
+    },
+
+    components: {
+      ToggleIcon,
+    }
+  }
+</script>
+
+<style>
+  .todo-icon {
+    padding: 1em;
+    border: 1px solid transparent;
+  }
+
+  .todo-controls {
+    display: flex;
+  }
+
+  .textarea {
+    margin-top: 1em;
+    margin-left: 2em;
+    border: none;
+    resize: none;
+    outline: none;
+    background: transparent;
+  }
+
+  .todo {
+    padding: 0.5em;
+    height: 1.4em;
+    transition: all 0.2s ease-out;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .todo--done {
+    color: rgb(132, 138, 143);
+  }
+
+  .todo--edit {
+    height: 7em;
+    background-color: white;
+    box-shadow: 0px 0px 14px -4px rgba(0, 0, 0, 0.55);
+    margin-top: 2em;
+    margin-bottom: 2em;
+  }
+
+  .todo--active {
+    border-radius: 3px;
+    background-color: rgb(210, 226, 254);
+  }
+</style>

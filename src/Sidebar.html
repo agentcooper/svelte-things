@@ -1,0 +1,74 @@
+<div class="sidebar">
+  <ul class="sidebar-items">
+    {{#each categories as category}}
+    <li class="{{category.title === currentCategory ? " sidebar-item--selected ": " "}} sidebar-item" on:click=" fire( 'change', { category: category.title })">
+      <i class="fas {{getIcon(category.title)}}"></i>
+      {{category.title}} {{#if category.left > 0}}
+      <span class="number">{{category.left}}</span>
+      {{/if}}
+    </li>
+    {{/each}}
+  </ul>
+</div>
+
+<style>
+  .sidebar {
+    width: 15vw;
+    background-color: rgb(249, 250, 250);
+
+    border-right: 1px solid rgb(244, 245, 245);
+  }
+
+  .sidebar-items {
+    margin: 1em;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sidebar-item {
+    font-weight: 500;
+    margin: 0;
+    padding: 0.2em 0.3em;
+    margin-top: 0.5em;
+    cursor: default;
+  }
+
+  .sidebar-item--selected {
+    border-radius: 3px;
+    background-color: rgb(228, 230, 233);
+  }
+
+  .number {
+    padding-right: 0.2em;
+    float: right;
+    color: rgb(158, 162, 167);
+  }
+</style>
+
+<script>
+  export default {
+    helpers: {
+      getIcon(category) {
+        if (category === "Inbox") {
+          return 'icon-inbox things-inbox';
+        }
+
+        if (category === 'Upcoming') {
+          return 'icon-calendar things-upcoming';
+        }
+
+        if (category === 'Anytime') {
+          return 'icon-stackoverflow things-anytime';
+        }
+
+        if (category === 'Someday') {
+          return 'icon-box things-someday';
+        }
+
+        if (category === "Today") {
+          return 'icon-star things-star';
+        }
+      }
+    }
+  }
+</script>

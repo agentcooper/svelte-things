@@ -1,0 +1,39 @@
+<div class="controls-container">
+  <div class="controls">
+    <span on:click="fire('create')">
+      <i class="control-icon icon-plus"></i>
+    </span>
+    <span on:click="fire('calendar')">
+      <i class="control-icon icon-calendar"></i>
+    </span>
+    <span on:click="fire('move')">
+      <i class="control-icon icon-right"></i>
+    </span>
+    <span on:click="fire('search')">
+      <i class="control-icon icon-search"></i>
+    </span>
+  </div>
+</div>
+
+<style>
+  .controls-container {
+    border-top: 1px solid rgb(240, 240, 240);
+    justify-content: center;
+    display: flex;
+  }
+
+  .controls {
+    padding-top: 1em;
+    padding-bottom: 1em;
+  }
+
+  .control-icon {
+    padding: 0 4em;
+    font-size: 1em;
+    border: 1px solid transparent;
+  }
+
+  .control-icon:hover {
+    border: 1px solid rgb(240, 240, 240);
+  }
+</style>

@@ -1,0 +1,14 @@
+<input bind:value='title' />
+<textarea bind:value='notes'></textarea>
+<button on:click="fire('create', { title, notes })">Create</button>
+
+<script>
+  export default {
+    data() {
+      return {
+        title: "",
+        notes: ""
+      };
+    }
+  }
+</script>

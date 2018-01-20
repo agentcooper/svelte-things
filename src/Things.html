@@ -1,0 +1,176 @@
+<div class="{{ currentEdit != -1 ? 'container--has-edit': '' }} container" style="display: flex; height: 100%;" on:click="reset()">
+  <Sidebar categories='{{ categories }}' currentCategory='{{ currentCategory }}' on:change='changeCategory(event.category)'
+  />
+  <div class="category">
+    <div class="category-area">
+      <h1>
+        <i class="fas {{getIcon(currentCategory)}}"></i>
+        <span style="margin-left: 0.1em;">{{currentCategory}}</span>
+      </h1>
+      <div class="category-todos">
+        <ul class="category-todo-list">
+          {{#if creatingTodo}}
+          <NewTodo on:create="create(event)" /> {{/if}} {{#each todos as todo}} {{#if todo.category === currentCategory }}
+          <li class="todo">
+            <Todo edit='{{ currentEdit === todo.id }}' on:edit='edit(event)' on:select='select(event)' active='{{ currentTodo === todo.id }}'
+              id='{{ todo.id }}' done='{{ todo.done }}' title='{{ todo.title }}' on:change='change(event)' />
+          </li>
+          {{/if}} {{/each}}
+        </ul>
+      </div>
+    </div>
+    <Controls on:create="create()" />
+  </div>
+</div>
+
+<script>
+  import Todo from './Todo.html';
+  import Sidebar from "./Sidebar.html";
+  import NewTodo from "./NewTodo.html";
+  import Controls from './Controls.html';
+
+  function nextId(todos) {
+    if (todos.length === 0) {
+      return 0;
+    }
+
+    return todos.map(todo => todo.id).sort((a, b) => b - a)[0] + 1;
+  }
+
+  export default {
+    helpers: {
+      getIcon(category) {
+        if (category === "Inbox") {
+          return 'icon-inbox things-inbox';
+        }
+
+        if (category === "Today") {
+          return 'icon-star things-star';
+        }
+      }
+    },
+
+    computed: {
+      categories: todos => Object.entries(todos.reduce((acc, todo) => {
+        if (!acc[todo.category]) {
+          acc[todo.category] = 0;
+        }
+
+        if (!todo.done) {
+          acc[todo.category]++
+        }
+
+        return acc;
+      }, {
+          'Upcoming': 0,
+          'Anytime': 0,
+          'Someday': 0,
+        })).map(([key, value]) => ({ title: key, left: value }))
+    },
+
+    data() {
+      return {
+        creatingTodo: false,
+        currentTodo: -1,
+        currentEdit: -1,
+        currentCategory: 'Today',
+      };
+    },
+
+    methods: {
+      reset() {
+        this.set({ currentTodo: -1, currentEdit: -1 });
+      },
+
+      create() {
+        const model = this.get();
+
+        const id = nextId(model.todos);
+
+        const todos = [
+          {
+            id,
+            title: "New to-do",
+            notes: "",
+            done: false,
+            category: model.currentCategory
+          },
+          ...model.todos
+        ];
+
+        this.set({
+          todos,
+        });
+
+        setTimeout(() => {
+          this.set({
+            currentEdit: id,
+            currentTodo: id
+          });
+        }, 0);
+      },
+
+      changeCategory(category) {
+        this.set({ currentCategory: category });
+      },
+
+      edit({ id }) {
+        this.set({ currentTodo: id, currentEdit: id });
+      },
+
+      select({ id }) {
+        this.set({ currentTodo: id });
+      },
+
+      change({ id, done }) {
+        const model = this.get();
+
+        const todos = model.todos.map(todo => {
+          if (todo.id === id) {
+            return Object.assign({}, todo, { done });
+          }
+          return todo;
+        });
+
+        this.set({
+          todos
+        });
+      },
+    },
+
+    components: {
+      Todo,
+      Sidebar,
+      NewTodo,
+      Controls,
+    },
+  };
+</script>
+
+<style>
+  .container {
+    background-color: white;
+    transition: all 0.2s ease-out;
+  }
+
+  .container--has-edit {
+    background-color: rgb(249, 250, 250);
+  }
+
+  .category {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .category-area {
+    padding: 2em 8em;
+    flex: 1;
+  }
+
+  .category-todo-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

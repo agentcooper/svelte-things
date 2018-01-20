@@ -1,0 +1,68 @@
+<:Window on:click='reset(event)' />
+
+<span ref:root class="{{ isOpen ? 'toggle-icon--open' : '' }} toggle-icon" on:click="click(event)">
+  <i class="toggle-icon__icon fas {{icon}}"></i>
+  <span ref:text class="toggle-icon__text">{{text}}</span>
+</span>
+
+<script>
+  export default {
+    oncreate() {
+      const rect = this.refs.text.getBoundingClientRect();
+      this.fullWidth = this.refs.root.scrollWidth + this.refs.root.offsetWidth;
+
+      this.observe('isOpen', isOpen => {
+        this.refs.root.style.width = isOpen ? `calc(${this.fullWidth}px + 2em)` : `1em`;
+      });
+    },
+
+    methods: {
+      reset(event) {
+        if (event.target.contains(this.refs.root)) {
+          return;
+        }
+
+        this.set({ isOpen: false });
+      },
+
+      click(event) {
+        this.set({ isOpen: true });
+      }
+    },
+
+    data() {
+      return {
+        isOpen: false
+      };
+    },
+  }
+</script>
+
+<style>
+  .toggle-icon {
+    padding: 3px;
+    display: inline-block;
+    width: 1em;
+    overflow-y: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: all 0.1s ease-in-out;
+    background-color: transparent;
+
+    border: 1px solid transparent;
+    border-radius: 3px;
+  }
+
+  .toggle-icon__icon {
+    opacity: 0.7;
+  }
+
+  .toggle-icon:hover {
+    border: 1px solid rgb(214, 214, 215);
+  }
+
+  .toggle-icon--open {
+    width: auto;
+    background-color: rgb(238, 239, 241)
+  }
+</style>
