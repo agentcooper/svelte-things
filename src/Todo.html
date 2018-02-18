@@ -1,6 +1,6 @@
-<div on:click="click(event, id)" on:dblclick="edit(event, id)" class="{{ done ? 'todo--done' : '' }} {{ edit ? 'todo--edit' : '' }} {{ (active && !edit) ? 'todo--active' : '' }} todo">
+<div ref:todo on:click="click(event, id)" on:dblclick="edit(event, id)" class="{{ done ? 'todo--done' : '' }} {{ edit ? 'todo--edit' : '' }} {{ (active && !edit) ? 'todo--active' : '' }} todo">
   <div>
-    <input type="checkbox" bind:checked='done' on:change='fire("change", { id, done })' /> {{title}}
+    <input type="checkbox" bind:checked='done' on:change='change("change", { id, done })' /> {{title}}
   </div>
   <textarea placeholder="Notes" class="textarea"></textarea>
   <div class="todo-controls">
@@ -17,6 +17,12 @@
 <script>
   import ToggleIcon from './ToggleIcon.html';
 
+  function restartAnimation(element, animationClassName) {
+    element.classList.remove(animationClassName);
+    void element.offsetWidth; // flush styles
+    element.classList.add(animationClassName);
+  }
+
   export default {
     data() {
       return {
@@ -25,13 +31,23 @@
     },
 
     methods: {
+      change(...args) {
+        const { todo } = this.refs;
+        restartAnimation(todo, 'todo-flash');
+        this.fire(...args);
+      },
+
       edit(event, id) {
-        this.fire('edit', { id });
+        if (!event.target.matches("input[type='checkbox']")) {
+          this.fire('edit', { id });
+        }
       },
 
       click(event, id) {
-        event.stopPropagation();
-        this.fire('select', { id });
+        if (!event.target.matches("input[type='checkbox']")) {
+          event.stopPropagation();
+          this.fire('select', { id });
+        }
       }
     },
 
@@ -42,6 +58,24 @@
 </script>
 
 <style>
+  @keyframes flash {
+    0% {
+      background-color: transparent;
+    }
+    10% {
+      background-color: rgb(249, 250, 250);
+    }
+    50% {
+      background-color: rgb(249, 250, 250);
+    }
+    60% {
+      background-color: rgb(249, 250, 250);
+    }
+    100% {
+      background-color: transparent;
+    }
+  }
+
   .todo-icon {
     padding: 1em;
     border: 1px solid transparent;
@@ -66,6 +100,11 @@
     transition: all 0.2s ease-out;
     border-radius: 3px;
     overflow: hidden;
+  }
+
+  .todo-flash {
+    animation-name: flash;
+    animation-duration: 0.8s;
   }
 
   .todo--done {

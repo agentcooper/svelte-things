@@ -1,3 +1,5 @@
+<:Window on:keydown='shortcut(event)' />
+
 <div class="{{ currentEdit != -1 ? 'container--has-edit': '' }} container" style="display: flex; height: 100%;" on:click="reset()">
   <Sidebar categories='{{ categories }}' currentCategory='{{ currentCategory }}' on:change='changeCategory(event.category)'
   />
@@ -78,6 +80,14 @@
     },
 
     methods: {
+      shortcut(event) {
+        // console.log(event);
+        if (event.keyCode === 78 && event.ctrlKey) {
+          event.preventDefault();
+          this.create();
+        }
+      },
+
       reset() {
         this.set({ currentTodo: -1, currentEdit: -1 });
       },
