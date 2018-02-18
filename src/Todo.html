@@ -1,6 +1,6 @@
 <div ref:todo on:click="click(event, id)" on:dblclick="edit(event, id)" class="{{ done ? 'todo--done' : '' }} {{ edit ? 'todo--edit' : '' }} {{ (active && !edit) ? 'todo--active' : '' }} todo">
   <div>
-    <input type="checkbox" bind:checked='done' on:change='change("change", { id, done })' /> {{title}}
+    <input type="checkbox" bind:checked='done' on:change='change("change", { id, done })' /> {{{title}}}
   </div>
   <textarea placeholder="Notes" class="textarea"></textarea>
   <div class="todo-controls">

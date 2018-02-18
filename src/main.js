@@ -23,6 +23,10 @@ const data = {
       category: "Anytime",
     },
     {
+      title: `Open source at <a href="https://github.com/agentcooper/svelte-things">https://github.com/agentcooper/svelte-things</a>`,
+      done: true,
+    },
+    {
       title: "Todo: select animation",
       done: true,
     },
